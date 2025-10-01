@@ -2,8 +2,9 @@ import { Command } from './command.interface.js';
 import axios from 'axios';
 import { MockServerData } from '../../shared/types/mock-server-data.type.js';
 import { TSVOfferGenerator } from '../../shared/libs/offer-generator/tsv-offer-generator.js';
-import { appendFile } from 'node:fs/promises';
 import { ERROR, SUCCESS } from '../cli-theme.js';
+import { TSVFileWriter } from '../../shared/libs/file-writer/tsv-file-writer.js';
+import { getErrorMessage } from '../../shared/helpers/common.js';
 
 export class GenerateCommand implements Command {
   private initData: MockServerData;
@@ -18,10 +19,11 @@ export class GenerateCommand implements Command {
 
   private async write(filepath: string, offerCount: number) {
     const dataGenerator = new TSVOfferGenerator(this.initData);
+    const fileWriter = new TSVFileWriter(filepath);
+
     for (let i = 0; i < offerCount; i++) {
-      await appendFile(
-        filepath, `${dataGenerator.generate()}\n`,
-        {encoding: 'utf8'}
+      await fileWriter.write(
+        dataGenerator.generate()
       );
     }
   }
@@ -40,9 +42,7 @@ export class GenerateCommand implements Command {
       console.info(SUCCESS(`File ${filepath} was created.`));
     } catch (error: unknown) {
       console.error(ERROR('Cannot generate data'));
-      if (error instanceof Error) {
-        console.error(ERROR(error.message));
-      }
+      console.error(ERROR(getErrorMessage(error)));
     }
   }
 }
