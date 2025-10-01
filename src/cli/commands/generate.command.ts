@@ -6,7 +6,7 @@ import { appendFile } from 'node:fs/promises';
 import { ERROR, SUCCESS } from '../cli-theme.js';
 
 export class GenerateCommand implements Command {
-  private initData!: MockServerData;
+  private initData: MockServerData;
 
   private async load(url: string) {
     try {
