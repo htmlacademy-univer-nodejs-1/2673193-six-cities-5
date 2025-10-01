@@ -11,7 +11,7 @@ export function generateRandomDate(start: Date, end: Date): Date {
 
 export function getRandomItems<T>(items: T[]): T[] {
   const startPos = generateRandomValue(0, items.length - 1);
-  const endPos = generateRandomValue(startPos, items.length);
+  const endPos = startPos + generateRandomValue(startPos, items.length);
   return items.slice(startPos, endPos);
 }
 
@@ -21,4 +21,17 @@ export function getRandomItem<T>(items: T[]): T {
 
 export function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : '';
+}
+
+export function generateRandomPassword(): string {
+  const length = Math.floor(Math.random() * 7) + 6;
+
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+  let password = '';
+
+  for (let i = 0; i < length; i++) {
+    password += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+
+  return password.split('').sort(() => Math.random() - 0.5).join('');
 }

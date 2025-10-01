@@ -32,19 +32,20 @@
             "https://images.example.com/photo9.jpg;https://images.example.com/photo10.jpg",
             "https://images.example.com/photo2.jpg"
         ],
-        "authors": [
+        "authorsNames": [
             "John Doe", "Vanya Ivanov", "Karl Petrovich", "Liza Lizovna", "Maria Polovinkina"
         ],
         "emails": [
             "johndoe@example.com", "emmail.@example.com", "someemail@fkkfk.com", "asdasd@fdmfm.com", "rere232@ya.ru"
         ],
         "avatars": [
-            "user.jpg",
-            "photo.jpg",
-            "awesome-avatar.jpg",
-            "roland.jpg",
-            "smite.jpg",
-            "coffee.jpg"
+            "https://avatars.example.com/avatar1.jpg",
+            "https://avatars.example.com/user.jpg",
+            "https://avatars.example.com/photo.jpg",
+            "https://avatars.example.com/awesome-avatar.jpg",
+            "https://avatars.example.com/roland.jpg",
+            "https://avatars.example.com/smite.jpg",
+            "https://avatars.example.com/coffee.jpg"
         ]
     }
 }
