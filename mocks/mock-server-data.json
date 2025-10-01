@@ -1,0 +1,51 @@
+{
+    "api": {
+        "titles": [
+            "Modern City Apartment",
+            "Cozy House in Paris",
+            "Country Cottage",
+            "Luxury Loft Penthouse",
+            "Small Flat for a Student",
+            "Big Family House"
+        ],
+        "descriptions": [
+            "Spacious and bright apartment located in the heart of Amsterdam, perfect for families or business travelers. Enjoy easy access to local attractions and public transport.",
+            "Charming house with a private garden, located in a quiet neighborhood of Paris. Ideal for a relaxing stay with all modern amenities included.",
+            "Perfect for those who want to be a farmer.",
+            "Fully furnished. Only for family. Without pets.",
+            "Good place to live alone."
+        ],
+        "cities": [
+            "Paris", "Cologne", "Brussels", "Amsterdam", "Hamburg", "Dusseldorf"
+        ],
+        "previewImages": [
+            "https://images.example.com/preview1.jpg",
+            "https://images.example.com/preview2.jpg",
+            "https://images.example.com/preview3.jpg",
+            "https://images.example.com/preview4.jpg",
+            "https://images.example.com/preview5.jpg"
+        ],
+        "images": [
+            "https://images.example.com/photo1.jpg;https://images.example.com/photo2.jpg;https://images.example.com/photo3.jpg;https://images.example.com/photo4.jpg;https://images.example.com/photo5.jpg;https://images.example.com/photo6.jpg",
+            "https://images.example.com/photo7.jpg;https://images.example.com/photo8.jpg;https://images.example.com/photo9.jpg;https://images.example.com/photo10.jpg;https://images.example.com/photo11.jpg;https://images.example.com/photo12.jpg",
+            "https://images.example.com/photo1.jpg;https://images.example.com/photo2.jpg;https://images.example.com/photo3.jpg;https://images.example.com/photo4.jpg;",
+            "https://images.example.com/photo9.jpg;https://images.example.com/photo10.jpg",
+            "https://images.example.com/photo2.jpg"
+        ],
+        "authorsNames": [
+            "John Doe", "Vanya Ivanov", "Karl Petrovich", "Liza Lizovna", "Maria Polovinkina"
+        ],
+        "emails": [
+            "johndoe@example.com", "emmail.@example.com", "someemail@fkkfk.com", "asdasd@fdmfm.com", "rere232@ya.ru"
+        ],
+        "avatars": [
+            "https://avatars.example.com/avatar1.jpg",
+            "https://avatars.example.com/user.jpg",
+            "https://avatars.example.com/photo.jpg",
+            "https://avatars.example.com/awesome-avatar.jpg",
+            "https://avatars.example.com/roland.jpg",
+            "https://avatars.example.com/smite.jpg",
+            "https://avatars.example.com/coffee.jpg"
+        ]
+    }
+}
