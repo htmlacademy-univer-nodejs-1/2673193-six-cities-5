@@ -1,9 +1,9 @@
 import { Command } from './command.interface.js';
-import { INFO, COMMAND, TITLE, SUCCESS } from '../cli-theme.js';
+import { theme } from '../cli-theme.js';
 
 function welcome() {
-  console.log(SUCCESS('Welcome to Six Cities CLI'));
-  console.log(SUCCESS(`
+  console.log(theme.success('Welcome to Six Cities CLI'));
+  console.log(theme.success(`
 #    ███████╗██╗██╗  ██╗     ██████╗██╗████████╗██╗███████╗███████╗
 #    ██╔════╝██║╚██╗██╔╝    ██╔════╝██║╚══██╔══╝██║██╔════╝██╔════╝
 #    ███████╗██║ ╚███╔╝     ██║     ██║   ██║   ██║█████╗  ███████╗
@@ -21,16 +21,16 @@ export class HelpCommand implements Command {
 
   public async execute(..._params: string[]): Promise<void> {
     welcome();
-    console.info(TITLE(
+    console.info(theme.title(
       'Программа для подготовки данных для REST API сервера.\n'
     ));
-    console.info(INFO(
-      `Пример: ${COMMAND('cli.js --<command> [--arguments]')}\n`
+    console.info(theme.info(
+      `Пример: ${theme.command('cli.js --<command> [--arguments]')}\n`
     ));
-    console.info(TITLE('Команды:'));
-    console.info(COMMAND('--version') + INFO(': #выводит номер версии'));
-    console.info(COMMAND('--help') + INFO(': #печатает эту справку'));
-    console.info(COMMAND('--generate <n> <filepath> <url>') + INFO(': #генерирует заданное количество тестовых предложений, взятых с сервера по данному адресу'));
-    console.info(COMMAND('--import <filepath>') + INFO(': #импортирует в базу данных информацию из tsv-файла (укажите путь)'));
+    console.info(theme.title('Команды:'));
+    console.info(theme.command('--version') + theme.info(': #выводит номер версии'));
+    console.info(theme.command('--help') + theme.info(': #печатает эту справку'));
+    console.info(theme.command('--generate <n> <filepath> <url>') + theme.info(': #генерирует заданное количество тестовых предложений, взятых с сервера по данному адресу'));
+    console.info(theme.command('--import <filepath>') + theme.info(': #импортирует в базу данных информацию из tsv-файла (укажите путь)'));
   }
 }

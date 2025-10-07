@@ -2,7 +2,7 @@ import { Command } from './command.interface.js';
 import axios from 'axios';
 import { MockServerData } from '../../shared/types/mock-server-data.type.js';
 import { TSVOfferGenerator } from '../../shared/libs/offer-generator/tsv-offer-generator.js';
-import { ERROR, SUCCESS } from '../cli-theme.js';
+import { theme } from '../cli-theme.js';
 import { TSVFileWriter } from '../../shared/libs/file-writer/tsv-file-writer.js';
 import { getErrorMessage } from '../../shared/helpers/common.js';
 
@@ -39,10 +39,10 @@ export class GenerateCommand implements Command {
     try {
       await this.load(url);
       await this.write(filepath, offerCount);
-      console.info(SUCCESS(`File ${filepath} was created.`));
+      console.info(theme.success(`File ${filepath} was created.`));
     } catch (error: unknown) {
-      console.error(ERROR('Cannot generate data'));
-      console.error(ERROR(getErrorMessage(error)));
+      console.error(theme.error('Cannot generate data'));
+      console.error(theme.error(getErrorMessage(error)));
     }
   }
 }

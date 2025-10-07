@@ -1,6 +1,6 @@
 import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
 import { Command } from './command.interface.js';
-import { ERROR, SUCCESS } from '../cli-theme.js';
+import { theme } from '../cli-theme.js';
 import { createOffer } from '../../shared/helpers/offer.js';
 import { getErrorMessage } from '../../shared/helpers/common.js';
 
@@ -15,7 +15,7 @@ export class ImportCommand implements Command {
   }
 
   private onEndImport(count: number) {
-    console.log(SUCCESS('File was read successfully.'));
+    console.log(theme.success('File was read successfully.'));
     console.info(`${count} rows imported.`);
   }
 
@@ -29,8 +29,8 @@ export class ImportCommand implements Command {
     try {
       fileReader.read();
     } catch (error) {
-      console.error(ERROR(`Can't import data from file: ${filename}`));
-      console.error(ERROR(`Details: ${getErrorMessage(error)}`));
+      console.error(theme.error(`Can't import data from file: ${filename}`));
+      console.error(theme.error(`Details: ${getErrorMessage(error)}`));
     }
   }
 }
