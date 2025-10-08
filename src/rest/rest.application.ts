@@ -1,14 +1,17 @@
+import { inject, injectable } from 'inversify';
 import { Config, RestSchema } from '../shared/libs/config/index.js';
 import { Logger } from '../shared/libs/logger/index.js';
+import { Component } from '../shared/types/index.js';
 
+@injectable()
 export class RestApplication {
   constructor(
-    private readonly logger: Logger,
-    private readonly config: Config<RestSchema>
+    @inject(Component.Logger) private readonly logger: Logger,
+    @inject(Component.Config) private readonly config: Config<RestSchema>
   ) {}
 
   public async init() {
     this.logger.info('Application initialization');
-    this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
+    this.logger.info(`Get values from env:\n$PORT: ${this.config.get('PORT')}\n$SALT: ${this.config.get('SALT')}\n$DB_HOST: ${this.config.get('DB_HOST')}`);
   }
 }
