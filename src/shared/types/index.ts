@@ -7,3 +7,4 @@ export * from './user-type.enum.js';
 export * from './amenities.enum.js';
 export * from './coodrinates.type.js';
 export * from './mock-server-data.type.js';
+export * from './component.enum.js';

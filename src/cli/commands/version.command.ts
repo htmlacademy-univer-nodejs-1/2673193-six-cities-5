@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { Command } from './command.interface.js';
 import { resolve } from 'node:path';
-import { ERROR, INFO, SUCCESS } from '../cli-theme.js';
+import { theme } from '../cli-theme.js';
 
 
 export class VersionCommand implements Command {
@@ -27,11 +27,11 @@ export class VersionCommand implements Command {
   public async execute(..._params: string[]): Promise<void> {
     try {
       const version = this.readVersion();
-      console.info(SUCCESS('Version: ') + INFO(`${version}`));
+      console.info(theme.success('Version: ') + theme.info(`${version}`));
     } catch (error: unknown) {
-      console.error(ERROR(`Failed to read version from ${this.filePath}`));
+      console.error(theme.error(`Failed to read version from ${this.filePath}`));
       if (error instanceof Error) {
-        console.error(ERROR(error.message));
+        console.error(theme.error(error.message));
       }
     }
   }
