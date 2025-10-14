@@ -10,12 +10,12 @@
   "main": "main.js",
   "scripts": {
     "start": "npm run build && node ./dist/main.rest.js",
-    "start:dev": "npm run build && node ./dist/main.rest.js | pino-pretty --colorize --translateTime SYS:standard",
+    "start:dev": "npm run ts -- ./src/main.rest.ts | pino-pretty --colorize --translateTime SYS:standard",
     "build": "npm run clean && npm run compile",
     "lint": "eslint src/ --ext .ts",
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
-    "ts": "ts-node",
+    "ts": "node --loader ts-node/esm",
     "mock:server": "json-server ./mocks/mock-server-data.json --port 4444"
   },
   "devDependencies": {
@@ -46,6 +46,7 @@
     "dayjs": "^1.11.18",
     "dotenv": "17.2.3",
     "inversify": "7.10.2",
+    "mongoose": "8.19.1",
     "pino": "10.0.0",
     "reflect-metadata": "0.2.2"
   }
