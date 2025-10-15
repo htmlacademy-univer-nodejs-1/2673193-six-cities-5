@@ -14,7 +14,7 @@ export class MongoDatabaseClient implements DatabaseClient {
 
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
-    @inject(Component.Config) private readonly restConfig: RestConfig
+    @inject(Component.Config) private readonly restConfig?: RestConfig
   ) {
     this.isConnected = false;
 
@@ -24,8 +24,8 @@ export class MongoDatabaseClient implements DatabaseClient {
       isConnected: () => this.isConnected
     };
 
-    const retryCount = this.restConfig.get('MONGO_RETRY_COUNT');
-    const retryTimeout = this.restConfig.get('MONGO_RETRY_TIMEOUT');
+    const retryCount = this.restConfig?.get('MONGO_RETRY_COUNT');
+    const retryTimeout = this.restConfig?.get('MONGO_RETRY_TIMEOUT');
     const serviceName = 'MongoDB';
 
     this.connectionManager = new ConnectionManager(
