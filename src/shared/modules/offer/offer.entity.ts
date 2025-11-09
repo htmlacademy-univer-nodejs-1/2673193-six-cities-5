@@ -1,7 +1,8 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose';
 import { AmenityType, City, Coordinates, OfferType } from '../../types/index.js';
-import { UserEntity } from '../user/user.entity.js';
+import { UserEntity } from '../user/index.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base {}
 
 @modelOptions({
@@ -9,6 +10,7 @@ export interface OfferEntity extends defaultClasses.Base {}
     collection: 'offers'
   }
 })
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({trim: true, required: true})
   public title: string;
@@ -75,10 +77,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({default: 0})
   public commentsCount: number;
 
-  @prop({
-    required: true,
-    type: () => [Number]
-  })
+  @prop({required: true})
   public coordinates: Coordinates;
 }
 

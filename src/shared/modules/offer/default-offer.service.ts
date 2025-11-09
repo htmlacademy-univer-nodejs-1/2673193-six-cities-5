@@ -1,16 +1,22 @@
 import { DocumentType, types } from '@typegoose/typegoose';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
+import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { OfferService } from './offer-service.interface.js';
 import { OfferEntity } from './offer.entity.js';
 import { inject, injectable } from 'inversify';
-import { Component } from '../../types/component.enum.js';
-import { Logger } from '../../libs/logger/logger.interface.js';
+import { Component, City, SortType } from '../../types/index.js';
+import { Logger } from '../../libs/logger/index.js';
+import { DEFAULT_OFFER_COUNT, DEFAULT_PREMIUM_OFFER_COUNT } from './offer.constant.js';
+import { CommentEntity } from '../comment/index.js';
+import { FavoriteEntity } from './favorite.entity.js';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
-    @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>
+    @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
+    @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>,
+    @inject(Component.FavoriteModel) private readonly favoriteModel: types.ModelType<FavoriteEntity>
   ) {}
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
@@ -21,6 +27,115 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel.findById(offerId).exec();
+    return this.offerModel
+      .findById(offerId)
+      .populate(['authorId'])
+      .exec();
+  }
+
+  public async find(): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .find()
+      .populate(['autorId'])
+      .exec();
+  }
+
+  public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, dto, {new: true})
+      .populate(['authorId'])
+      .exec();
+  }
+
+  public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndDelete(offerId)
+      .exec();
+  }
+
+  public async findSorted(count?: number): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .find()
+      .sort({ createdAt: SortType.Down })
+      .limit(count ?? DEFAULT_OFFER_COUNT)
+      .populate(['autorId'])
+      .exec();
+  }
+
+  public async incCommentsCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, {'$inc': {commentsCount: 1}})
+      .exec();
+  }
+
+  public async findPremium(city: City): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .find({
+        isPremium: true,
+        city: city
+      })
+      .sort({ publicationDate: SortType.Down })
+      .limit(DEFAULT_PREMIUM_OFFER_COUNT)
+      .populate(['authorId'])
+      .exec();
+  }
+
+  public async findFavorite(userId: string): Promise<DocumentType<OfferEntity>[]> {
+    const favorites = await this.favoriteModel.find({ userId }).exec();
+    if (favorites.length === 0) {
+      return [];
+    }
+
+    const offerIds = favorites.map((fav) => fav.offerId);
+    return this.offerModel
+      .find({
+        _id: { $in: offerIds }
+      })
+      .populate(['authorId'])
+      .exec();
+  }
+
+  public async addToFavorite(userId: string, offerId: string): Promise<void> {
+    const offerExists = await this.exists(offerId);
+    if (!offerExists) {
+      throw new Error(`Offer with id ${offerId} not found`);
+    }
+
+    await this.favoriteModel
+      .findOneAndUpdate(
+        { userId, offerId },
+        { userId, offerId },
+        { upsert: true, new: true }
+      )
+      .exec();
+  }
+
+  public async removeFromFavorite(userId: string, offerId: string): Promise<void> {
+    await this.favoriteModel
+      .findOneAndDelete({ userId, offerId })
+      .exec();
+  }
+
+  public async updateRating(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    const comments = await this.commentModel
+      .find({ offerId })
+      .exec();
+
+    if (comments.length === 0) {
+      return this.offerModel
+        .findByIdAndUpdate(offerId, { rating: 0 }, { new: true })
+        .exec();
+    }
+
+    const totalRating = comments.reduce((sum, com) => sum + com.rating, 0);
+    const finalRating = Math.round((totalRating / comments.length) * 10) / 10;
+
+    return this.offerModel
+      .findByIdAndUpdate(offerId, { rating: finalRating }, { new: true })
+      .exec();
+  }
+
+  public async exists(documentId: string): Promise<boolean> {
+    return (await this.offerModel.exists({ _id: documentId})) !== null;
   }
 }

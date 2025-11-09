@@ -1,4 +1,4 @@
-import { UserType } from '../../../types/user-type.enum.js';
+import { UserType } from '../../../types/index.js';
 
 export class CreateUserDto {
   public name: string;
