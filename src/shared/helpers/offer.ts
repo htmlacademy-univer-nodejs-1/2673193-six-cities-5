@@ -2,14 +2,13 @@ import { AmenityType, City, CITY_COORDINATES, Offer, OfferType, User, UserType }
 
 export function createOffer(offerData: string): Offer {
   const [
-    title, description, publicationDate, city, previewImage, images, isPremium, isFavourite, rating, type, bedrooms, maxGuests, price, amenities, authorName, authorEmail, authorAvatar, authorPassword, authorType, commentsCount, coordinates
+    title, description, publicationDate, city, previewImage, images, isPremium, isFavourite, rating, type, bedrooms, maxGuests, price, amenities, authorName, authorEmail, authorAvatar, authorType, commentsCount, coordinates
   ] = offerData.replace('\n', '').split('\t');
 
   const author: User = {
     name: authorName,
     email: authorEmail,
     avatar: authorAvatar,
-    password: authorPassword,
     type: authorType as UserType,
   };
 

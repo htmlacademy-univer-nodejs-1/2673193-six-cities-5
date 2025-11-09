@@ -1,6 +1,6 @@
 import { OfferGenerator } from './offer-generator.interface.js';
 import { AmenityType, City, CITY_COORDINATES, MockServerData, OfferType, UserType } from '../../types/index.js';
-import { generateRandomPassword, generateRandomValue, getRandomItem, getRandomItems } from '../../helpers/common.js';
+import { generateRandomValue, getRandomItem, getRandomItems } from '../../helpers/common.js';
 import dayjs from 'dayjs';
 
 const FIRST_DAY = 1;
@@ -27,7 +27,6 @@ export class TSVOfferGenerator implements OfferGenerator {
     const authorName = getRandomItem<string>(this.mockData.authorsNames);
     const email = getRandomItem<string>(this.mockData.emails);
     const avatar = getRandomItem<string>(this.mockData.avatars);
-    const password = generateRandomPassword();
     const authorType = getRandomItem<string>([UserType.Pro, UserType.Regular]);
     const commentsCount = 0;
     const coordinates = CITY_COORDINATES[city as City];
@@ -50,7 +49,6 @@ export class TSVOfferGenerator implements OfferGenerator {
       authorName,
       email,
       avatar,
-      password,
       authorType,
       commentsCount,
       `${coordinates.latitude},${coordinates.longitude}`
