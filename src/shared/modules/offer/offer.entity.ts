@@ -29,7 +29,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({required: true})
   public previewImage: string;
 
-  @prop({required: true})
+  @prop({
+    required: true,
+    type: () => [String]
+  })
   public images: string[];
 
   @prop({required: true})
@@ -57,7 +60,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({required: true})
   public price: number;
 
-  @prop({required: true})
+  @prop({
+    required: true,
+    type: () => [String]
+  })
   public amenities: AmenityType[];
 
   @prop({
@@ -69,7 +75,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({default: 0})
   public commentsCount: number;
 
-  @prop({required: true})
+  @prop({
+    required: true,
+    type: () => [Number]
+  })
   public coordinates: Coordinates;
 }
 

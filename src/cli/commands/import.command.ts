@@ -89,7 +89,7 @@ export class ImportCommand implements Command {
     fileReader.on('end', this.onEndImport);
 
     try {
-      fileReader.read();
+      await fileReader.read();
     } catch (error) {
       console.error(theme.error(`Can't import data from file: ${filename}`));
       console.error(theme.error(`Details: ${getErrorMessage(error)}`));
