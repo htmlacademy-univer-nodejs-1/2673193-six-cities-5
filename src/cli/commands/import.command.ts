@@ -8,6 +8,8 @@ import { DefaultOfferService, OfferModel, OfferService } from '../../shared/modu
 import { ConsoleLogger, Logger } from '../../shared/libs/logger/index.js';
 import { City, CITY_COORDINATES, Offer } from '../../shared/types/index.js';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
+import { CommentModel } from '../../shared/modules/comment/index.js';
+import { FavoriteModel } from '../../shared/modules/offer/index.js';
 
 export class ImportCommand implements Command {
   private userService: UserService;
@@ -20,7 +22,12 @@ export class ImportCommand implements Command {
     this.onImportedLine = this.onImportedLine.bind(this);
     this.onEndImport = this.onEndImport.bind(this);
     this.logger = new ConsoleLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
+    this.offerService = new DefaultOfferService(
+      this.logger,
+      OfferModel,
+      CommentModel,
+      FavoriteModel
+    );
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
@@ -50,7 +57,7 @@ export class ImportCommand implements Command {
 
     const city = offer.city;
 
-    await this.offerService.create({
+    const createdOffer = await this.offerService.create({
       title: offer.title,
       description: offer.description,
       publicationDate: offer.publicationDate,
@@ -69,6 +76,10 @@ export class ImportCommand implements Command {
       commentsCount: offer.commentsCount,
       coordinates: CITY_COORDINATES[city as City],
     });
+
+    if (offer.isFavorite && createdOffer.id) {
+      await this.offerService.addToFavorite(user.id, createdOffer.id);
+    }
   }
 
   public async execute(
@@ -89,7 +100,7 @@ export class ImportCommand implements Command {
     fileReader.on('end', this.onEndImport);
 
     try {
-      fileReader.read();
+      await fileReader.read();
     } catch (error) {
       console.error(theme.error(`Can't import data from file: ${filename}`));
       console.error(theme.error(`Details: ${getErrorMessage(error)}`));

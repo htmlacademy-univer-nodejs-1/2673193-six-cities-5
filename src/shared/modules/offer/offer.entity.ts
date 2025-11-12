@@ -1,7 +1,8 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose';
 import { AmenityType, City, Coordinates, OfferType } from '../../types/index.js';
-import { UserEntity } from '../user/user.entity.js';
+import { UserEntity } from '../user/index.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base {}
 
 @modelOptions({
@@ -9,6 +10,7 @@ export interface OfferEntity extends defaultClasses.Base {}
     collection: 'offers'
   }
 })
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({trim: true, required: true})
   public title: string;
@@ -29,7 +31,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({required: true})
   public previewImage: string;
 
-  @prop({required: true})
+  @prop({
+    required: true,
+    type: () => [String]
+  })
   public images: string[];
 
   @prop({required: true})
@@ -57,7 +62,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({required: true})
   public price: number;
 
-  @prop({required: true})
+  @prop({
+    required: true,
+    type: () => [String]
+  })
   public amenities: AmenityType[];
 
   @prop({

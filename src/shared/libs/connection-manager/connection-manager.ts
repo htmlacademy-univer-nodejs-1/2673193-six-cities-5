@@ -45,7 +45,7 @@ export class ConnectionManager<TConfig = unknown, TConnection extends Connection
 
         return;
       } catch (error) {
-        this.logger.error(`Failed to connect to ${serviceName}. Attempt ${++attempt}`, error as Error);
+        this.logger.error(`Failed to connect to ${serviceName}. Attempt ${++attempt}.`, error as Error);
         this.connection = null;
         if (attempt < retryCount) {
           await setTimeout(retryTimeout);

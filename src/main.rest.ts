@@ -4,13 +4,15 @@ import 'reflect-metadata';
 import { RestApplication, createRestApplicaionContainer } from './rest/index.js';
 import { createUserContainer } from './shared/modules/user/index.js';
 import { createOfferContainer } from './shared/modules/offer/index.js';
+import { createCommentContainer } from './shared/modules/comment/index.js';
 
 async function bootstrap() {
   const restContainer = createRestApplicaionContainer();
   const userContainer = createUserContainer(restContainer);
   const offerContainer = createOfferContainer(userContainer);
+  const appContainer = createCommentContainer(offerContainer);
 
-  const app = offerContainer.get<RestApplication>(Component.RestApplication);
+  const app = appContainer.get<RestApplication>(Component.RestApplication);
   await app.init();
 }
 
