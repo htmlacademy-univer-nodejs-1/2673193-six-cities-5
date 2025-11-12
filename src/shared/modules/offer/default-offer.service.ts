@@ -36,7 +36,7 @@ export class DefaultOfferService implements OfferService {
   public async find(): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
       .find()
-      .populate(['autorId'])
+      .populate(['authorId'])
       .exec();
   }
 
@@ -68,11 +68,15 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  public async findPremium(city: City): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremium(city: string): Promise<DocumentType<OfferEntity>[]> {
+    if (!Object.values(City).includes(city as City)) {
+      throw new Error(`Invalid city: ${city}`);
+    }
+
     return this.offerModel
       .find({
         isPremium: true,
-        city: city
+        city: city as City
       })
       .sort({ publicationDate: SortType.Down })
       .limit(DEFAULT_PREMIUM_OFFER_COUNT)

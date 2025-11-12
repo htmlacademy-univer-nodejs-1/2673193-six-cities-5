@@ -2,7 +2,6 @@ import { DocumentType } from '@typegoose/typegoose';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { OfferEntity } from './offer.entity.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
-import { City } from '../../types/index.js';
 
 export interface OfferService {
   create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>>;
@@ -13,7 +12,7 @@ export interface OfferService {
   findSorted(): Promise<DocumentType<OfferEntity>[]>;
 
   incCommentsCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  findPremium(city: City): Promise<DocumentType<OfferEntity>[]>;
+  findPremium(city: string): Promise<DocumentType<OfferEntity>[]>;
   findFavorite(userId: string): Promise<DocumentType<OfferEntity>[]>;
   addToFavorite(userId: string, offerId: string): Promise<void>;
   removeFromFavorite(userId: string, offerId: string): Promise<void>;

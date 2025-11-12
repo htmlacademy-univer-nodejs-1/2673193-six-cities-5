@@ -1,3 +1,5 @@
+import { ClassConstructor, plainToInstance } from 'class-transformer';
+
 export function generateRandomValue(min: number, max: number, fraction = 0): number {
   return +((Math.random() * (max - min)) + min).toFixed(fraction);
 }
@@ -34,4 +36,14 @@ export function generateRandomPassword(): string {
   }
 
   return password.split('').sort(() => Math.random() - 0.5).join('');
+}
+
+export function fillDto<T, V>(dto: ClassConstructor<T>, plainObject: V) {
+  return plainToInstance(dto, plainObject, { excludeExtraneousValues: true });
+}
+
+export function createErrorObject(message: string) {
+  return {
+    error: message,
+  };
 }
