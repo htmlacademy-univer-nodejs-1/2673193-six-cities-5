@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
-import { BaseController, HttpMethod } from '../../libs/rest/index.js';
+import { BaseController, HttpError, HttpMethod } from '../../libs/rest/index.js';
 import { Component } from '../../types/component.enum.js';
 import { Logger } from '../../libs/logger/index.js';
-import { Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { CreateUserRequest } from './create-user-request.type.js';
 import { UserService } from './user-service.interface.js';
 import { Config, RestSchema } from '../../libs/config/index.js';
@@ -22,19 +22,21 @@ export class UserController extends BaseController {
 
     this.logger.info('Register routes for UserController..');
 
+    this.addRoute({ path: '/register', method: HttpMethod.POST, handler: this.create });
     this.addRoute({ path: '/login', method: HttpMethod.POST, handler: this.login });
     this.addRoute({ path: '/login', method: HttpMethod.GET, handler: this.check });
-    this.addRoute({ path: '/register', method: HttpMethod.POST, handler: this.create });
+    this.addRoute({ path: '/logout', method: HttpMethod.POST, handler: this.logout });
   }
 
   public async create(
-    { body }: CreateUserRequest, res: Response
+    { body }: CreateUserRequest, res: Response, _next: NextFunction
   ): Promise<void> {
     const existUser = await this.userService.findByEmail(body.email);
     if (existUser) {
-      const existUserError = new Error(`User with email ${body.email} already exists`);
-      this.error(res, StatusCodes.CONFLICT, { error: existUserError });
-      return this.logger.error(existUserError.message, existUserError);
+      throw new HttpError(
+        StatusCodes.CONFLICT, `User with email "${body.email}" already exists.`,
+        'UserController'
+      );
     }
 
     const result = await this.userService.create(body, this.configService.get('SALT'));
@@ -66,5 +68,13 @@ export class UserController extends BaseController {
 
     this.ok(res, fillDto(UserRdo, existUser));
     return this.logger.error('Not implemented', new Error('Not implemented'));
+  }
+
+  public async logout(
+    _req: Request,
+    res: Response,
+    _next: NextFunction
+  ): Promise<void> {
+    this.ok(res, { message: 'Logged out succesfully' });
   }
 }
