@@ -41,6 +41,10 @@ export abstract class BaseController implements Controller {
     this.send(res, StatusCodes.NO_CONTENT, data);
   }
 
+  error<T>(res: Response, error: StatusCodes, data: T): void {
+    this.send(res, error, data);
+  }
+
   getRouter(): Router {
     return this._router;
   }
