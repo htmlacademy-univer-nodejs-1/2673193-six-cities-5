@@ -73,6 +73,16 @@ json-server ./mocks/mock-server-data.json --port 4444
 ```
 
 Команда для поднятия тестового REST API интерфейса с подготовленными данными.
+### Переменные окружения
+`PORT=8080` - порт приложения  
+`SALT=exampleSALT` - соль для паролей  
+`DB_HOST=127.0.0.1` - хост базы данных  
+`DB_USER=user` - имя пользователя базы данных  
+`DB_PASSWORD=pass` - пароль для БД  
+`DB_PORT=1000` - порт БД  
+`DB_NAME=db-name` - имя БД  
+`MONGO_RETRY_COUNT=5` - число попыток подключения к MongoDb  
+`MONGO_RETRY_TIMEOUT=1000` - время на одну попытку подключения к MongoDb
 
 ## Структура проекта
 

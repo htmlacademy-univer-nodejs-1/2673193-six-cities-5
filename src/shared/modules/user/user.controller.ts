@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { BaseController, HttpError, HttpMethod } from '../../libs/rest/index.js';
+import { BaseController, HttpError, HttpMethod, ValidateDtoMiddleware } from '../../libs/rest/index.js';
 import { Component } from '../../types/component.enum.js';
 import { Logger } from '../../libs/logger/index.js';
 import { NextFunction, Request, Response } from 'express';
@@ -10,6 +10,8 @@ import { StatusCodes } from 'http-status-codes';
 import { fillDto } from '../../helpers/common.js';
 import { UserRdo } from './rdo/user.rdo.js';
 import { LoginUserRequest } from './login-user-request.type.js';
+import { CreateUserDto } from './dto/create-user.dto.js';
+import { LoginUserDto } from './dto/login-user.dto.js';
 
 @injectable()
 export class UserController extends BaseController {
@@ -22,8 +24,18 @@ export class UserController extends BaseController {
 
     this.logger.info('Register routes for UserController..');
 
-    this.addRoute({ path: '/register', method: HttpMethod.POST, handler: this.create });
-    this.addRoute({ path: '/login', method: HttpMethod.POST, handler: this.login });
+    this.addRoute({
+      path: '/register',
+      method: HttpMethod.POST,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateUserDto)]
+    });
+    this.addRoute({
+      path: '/login',
+      method: HttpMethod.POST,
+      handler: this.login,
+      middlewares: [new ValidateDtoMiddleware(LoginUserDto)]
+    });
     this.addRoute({ path: '/login', method: HttpMethod.GET, handler: this.check });
     this.addRoute({ path: '/logout', method: HttpMethod.POST, handler: this.logout });
   }
@@ -48,12 +60,15 @@ export class UserController extends BaseController {
   ): Promise<void> {
     const existUser = await this.userService.findByEmail(body.email);
     if (!existUser) {
-      const existUserError = new Error(`User with email ${body.email} not found`);
-      this.error(_res, StatusCodes.UNAUTHORIZED, { error: existUserError });
-      return this.logger.error(existUserError.message, existUserError);
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED, `User with email ${body.email} not found`,
+        'UserController'
+      );
+      throw new HttpError(
+        StatusCodes.NOT_IMPLEMENTED, 'Not implemented',
+        'UserController',
+      );
     }
-
-    return this.logger.error('Not implemented', new Error('Not implemented'));
   }
 
   public async check(

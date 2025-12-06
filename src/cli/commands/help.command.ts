@@ -31,6 +31,6 @@ export class HelpCommand implements Command {
     console.info(theme.command('--version') + theme.info(': #выводит номер версии'));
     console.info(theme.command('--help') + theme.info(': #печатает эту справку'));
     console.info(theme.command('--generate <n> <filepath> <url>') + theme.info(': #генерирует заданное количество тестовых предложений, взятых с сервера по данному адресу'));
-    console.info(theme.command('--import <filepath>') + theme.info(': #импортирует в базу данных информацию из tsv-файла (укажите путь)'));
+    console.info(theme.command('--import <filepath> <db_username> <db_password> <dbhost> <dbname> <salt>') + theme.info(': #импортирует в базу данных информацию из tsv-файла (укажите путь)'));
   }
 }

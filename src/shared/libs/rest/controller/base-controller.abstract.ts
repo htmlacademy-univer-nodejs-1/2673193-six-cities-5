@@ -1,3 +1,4 @@
+import asyncHandler from 'express-async-handler';
 import { Response, Router } from 'express';
 import { Route } from '../types/route.interface.js';
 import { Controller } from './controller.interface.js';
@@ -18,7 +19,13 @@ export abstract class BaseController implements Controller {
   }
 
   addRoute(route: Route): void {
-    this._router[route.method](route.path, route.handler.bind(this));
+    const wrappedAsyncHandler = asyncHandler(route.handler.bind(this));
+    const middlewareHandlers = route.middlewares?.map(
+      (item) => asyncHandler(item.execute.bind(item))
+    );
+    const allHandlers = middlewareHandlers ? [...middlewareHandlers, wrappedAsyncHandler] : wrappedAsyncHandler;
+
+    this._router[route.method](route.path, allHandlers);
     this.logger.info(`Route registered: ${route.method.toUpperCase()} ${route.path}`);
   }
 
