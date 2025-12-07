@@ -16,10 +16,7 @@ export class DefaultUserService implements UserService {
 
   public async create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
     const user = new UserEntity(dto);
-    console.log(user);
     user.setPassword(dto.password, salt);
-    console.log('---after');
-    console.log(user);
 
     const result = await this.userModel.create(user);
     this.logger.info(`New user created: ${user.email}`);

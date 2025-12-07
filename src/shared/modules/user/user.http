@@ -20,3 +20,19 @@ Content-Type: application/json
   "email": "asdasd@fdmfm.com",
   "password": "shining"
 }
+
+
+###
+## upload avatar
+
+POST http://localhost:5000/users/68efd98fd8d36eafd6f6bbfb/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="image.png"
+Content-Type: image/png
+
+< C:\Users\User\Desktop\images.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+##

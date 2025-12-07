@@ -13,6 +13,7 @@ export interface RestSchema {
   DB_NAME: string;
   MONGO_RETRY_COUNT: number;
   MONGO_RETRY_TIMEOUT: number;
+  UPLOAD_DIRECTORY: string;
 }
 
 export const configRestSchema = convict<RestSchema>({
@@ -69,5 +70,11 @@ export const configRestSchema = convict<RestSchema>({
     format: Number,
     env: 'MONGO_RETRY_TIMEOUT',
     default: 1000
-  }
+  },
+  UPLOAD_DIRECTORY: {
+    doc: 'Directory for upload files',
+    format: String,
+    env: 'UPLOAD_DIRECTORY',
+    default: 'null'
+  },
 });

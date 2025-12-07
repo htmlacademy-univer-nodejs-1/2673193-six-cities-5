@@ -12,3 +12,4 @@ coverage
 mocks/test-data.tsv
 .env
 .docker-compose.dev.yaml
+/uploads/
