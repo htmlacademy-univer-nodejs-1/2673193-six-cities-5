@@ -1,4 +1,4 @@
-export const CreateOfferValidationMessage = {
+export const CreateUpdateOfferValidationMessage = {
   title: {
     required: 'Title is required',
     minLength: 'Minimum title length must be 10',
@@ -44,7 +44,7 @@ export const CreateOfferValidationMessage = {
 
   rating: {
     required: 'Rating is required',
-    invalidFormat: 'Rating must be a number (one decimal place allowed)',
+    invalidType: 'Rating must be a number (one decimal place allowed)',
     minValue: 'Minimum rating is 1',
     maxValue: 'Maximum rating is 5',
   },

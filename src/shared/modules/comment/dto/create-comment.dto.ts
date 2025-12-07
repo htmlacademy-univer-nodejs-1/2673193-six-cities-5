@@ -19,6 +19,5 @@ export class CreateCommentDto {
   @IsMongoId({message: CreateCommentValidationMessage.offerId.invalidFormat})
   public offerId: string;
 
-  @IsMongoId({message: CreateCommentValidationMessage.authorId.invalidFormat})
   public authorId: string;
 }
