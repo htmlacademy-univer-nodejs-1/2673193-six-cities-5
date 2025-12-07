@@ -20,7 +20,7 @@ import {
 import { Type } from 'class-transformer';
 import { City, OfferType, Coordinates } from '../../../types/index.js';
 import { AmenityType } from '../../../types/amenities.enum.js';
-import { CreateOfferValidationMessage as CreateUpdateOfferValidationMessage } from './create-offer.messages.js';
+import { CreateUpdateOfferValidationMessage } from './create-offer.messages.js';
 import { CityCoordinatesMatch, OneDecimalRule } from './create-offer.dto.js';
 
 export class UpdateOfferDto {

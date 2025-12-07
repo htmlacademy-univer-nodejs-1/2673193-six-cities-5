@@ -1,13 +1,18 @@
 import { inject, injectable } from 'inversify';
-import { BaseController, HttpError, HttpMethod } from '../../libs/rest/index.js';
-import { Component } from '../../types/component.enum.js';
+import {
+  BaseController,
+  DocumentExistsMiddleware,
+  HttpMethod,
+  PrivateRouteMiddleware,
+  ValidateObjectIdMiddleware
+} from '../../libs/rest/index.js';
+import { Component } from '../../types/index.js';
 import { OfferService } from './offer-service.interface.js';
 import { Logger } from '../../libs/logger/index.js';
 import { Request, Response } from 'express';
-import { fillDto } from '../../helpers/common.js';
+import { fillDto } from '../../helpers/index.js';
 import { OfferShortRdo } from './rdo/offer-short.rdo.js';
 import { ParamOfferId } from './offerId.param.type.js';
-import { StatusCodes } from 'http-status-codes';
 
 @injectable()
 export class FavoritesController extends BaseController {
@@ -19,64 +24,55 @@ export class FavoritesController extends BaseController {
 
     this.logger.info('Register routes for FavoritesController..');
 
-    this.addRoute({path: '/', method: HttpMethod.GET, handler: this.index});
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.GET,
+      handler: this.index,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+      ]
+    });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.POST,
-      handler: this.addToFavorites as unknown as (req: Request, res: Response) => void
+      handler: this.addToFavorites,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
     });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.DELETE,
-      handler: this.removeFromFavorites as unknown as (req: Request, res: Response) => void
+      handler: this.removeFromFavorites,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
     });
   }
 
   public async index(
-    _req: Request, res: Response
+    { tokenPayload }: Request, res: Response
   ): Promise<void> {
-    // const offers = await this.offerService.findFavorite(userId);
-    const offers = await this.findFavorites();
+    const offers = await this.offerService.findFavorite(tokenPayload.id);
     const responseData = fillDto(OfferShortRdo, offers);
     this.ok(res, responseData);
   }
 
-  private async findFavorites() {
-    return [
-      {
-        id: 'dflpsdlf',
-        title: 'fdldfsalfl',
-      },
-      {
-        id: 'dflpsdlf',
-        title: 'fdldfsalfl',
-      }
-    ];
-  }
-
   public async addToFavorites(
-    { params }: Request<ParamOfferId>,
-    _res: Response
+    { params, tokenPayload }: Request<ParamOfferId>, res: Response
   ): Promise<void> {
-    const {offerId} = params;
-    const offer = await this.offerService.findById(offerId);
-    if (!offer) {
-      throw new HttpError(StatusCodes.NOT_FOUND, 'Offer not found', 'FavoritesController');
-    }
-
-    // await this.offerService.addToFavorite(userId, offerId);
-    throw new Error('Not implemented');
+    await this.offerService.addToFavorite(tokenPayload.id, params.offerId);
+    this.ok(res, { message: 'Offer added to favorites' });
   }
 
   public async removeFromFavorites(
-    { params }: Request<ParamOfferId>,
-    _res: Response
+    { params, tokenPayload }: Request<ParamOfferId>, res: Response
   ): Promise<void> {
-    const {offerId} = params;
-    const offer = await this.offerService.findById(offerId);
-    if (!offer) {
-      throw new HttpError(StatusCodes.NOT_FOUND, 'Offer not found', 'FavoritesController');
-    }
-    throw new Error('Not implemented');
+    await this.offerService.removeFromFavorite(tokenPayload.id, params.offerId);
+    this.ok(res, { message: 'Offer removed from favorites' });
   }
 }

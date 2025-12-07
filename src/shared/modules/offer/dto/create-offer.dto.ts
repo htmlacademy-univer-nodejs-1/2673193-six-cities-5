@@ -18,13 +18,12 @@ import {
   Validate,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  ValidationArguments,
-  IsMongoId
+  ValidationArguments
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { City, OfferType, Coordinates, CITY_COORDINATES } from '../../../types/index.js';
 import { AmenityType } from '../../../types/amenities.enum.js';
-import { CreateOfferValidationMessage } from './create-offer.messages.js';
+import { CreateUpdateOfferValidationMessage } from './create-offer.messages.js';
 
 @ValidatorConstraint({ name: 'OneDecimal', async: false })
 export class OneDecimalRule implements ValidatorConstraintInterface {
@@ -63,91 +62,89 @@ export class CityCoordinatesMatch implements ValidatorConstraintInterface {
   }
 
   defaultMessage(_args: ValidationArguments): string {
-    return CreateOfferValidationMessage.coordinates.invalidFormat;
+    return CreateUpdateOfferValidationMessage.coordinates.invalidFormat;
   }
 }
 
 export class CreateOfferDto {
   @IsString()
-  @IsNotEmpty({ message: CreateOfferValidationMessage.title.required })
-  @MinLength(10, { message: CreateOfferValidationMessage.title.minLength })
-  @MaxLength(100, { message: CreateOfferValidationMessage.title.maxLength })
+  @IsNotEmpty({ message: CreateUpdateOfferValidationMessage.title.required })
+  @MinLength(10, { message: CreateUpdateOfferValidationMessage.title.minLength })
+  @MaxLength(100, { message: CreateUpdateOfferValidationMessage.title.maxLength })
   public title: string;
 
   @IsString()
-  @IsNotEmpty({ message: CreateOfferValidationMessage.description.required })
-  @MinLength(20, { message: CreateOfferValidationMessage.description.minLength })
-  @MaxLength(1024, { message: CreateOfferValidationMessage.description.maxLength })
+  @IsNotEmpty({ message: CreateUpdateOfferValidationMessage.description.required })
+  @MinLength(20, { message: CreateUpdateOfferValidationMessage.description.minLength })
+  @MaxLength(1024, { message: CreateUpdateOfferValidationMessage.description.maxLength })
   public description: string;
 
-  @IsNotEmpty({ message: CreateOfferValidationMessage.publicationDate.required })
-  @IsDateString({}, { message: CreateOfferValidationMessage.publicationDate.invalidFormat })
+  @IsNotEmpty({ message: CreateUpdateOfferValidationMessage.publicationDate.required })
+  @IsDateString({}, { message: CreateUpdateOfferValidationMessage.publicationDate.invalidFormat })
   public publicationDate: string;
 
-  @IsNotEmpty({ message: CreateOfferValidationMessage.city.required })
-  @IsEnum(City, { message: CreateOfferValidationMessage.city.invalid })
+  @IsNotEmpty({ message: CreateUpdateOfferValidationMessage.city.required })
+  @IsEnum(City, { message: CreateUpdateOfferValidationMessage.city.invalid })
   public city: City;
 
   @IsString()
-  @IsNotEmpty({ message: CreateOfferValidationMessage.previewImage.required })
-  @IsUrl({}, { message: CreateOfferValidationMessage.previewImage.invalidUrl })
+  @IsNotEmpty({ message: CreateUpdateOfferValidationMessage.previewImage.required })
+  @IsUrl({}, { message: CreateUpdateOfferValidationMessage.previewImage.invalidUrl })
   public previewImage: string;
 
-  @IsArray({ message: CreateOfferValidationMessage.images.invalidFormat })
-  @ArrayMinSize(6, { message: CreateOfferValidationMessage.images.length })
-  @ArrayMaxSize(6, { message: CreateOfferValidationMessage.images.length })
-  @IsUrl({}, { each: true, message: CreateOfferValidationMessage.images.invalidUrl })
+  @IsArray({ message: CreateUpdateOfferValidationMessage.images.invalidFormat })
+  @ArrayMinSize(6, { message: CreateUpdateOfferValidationMessage.images.length })
+  @ArrayMaxSize(6, { message: CreateUpdateOfferValidationMessage.images.length })
+  @IsUrl({}, { each: true, message: CreateUpdateOfferValidationMessage.images.invalidUrl })
   public images: string[];
 
-  @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidType })
+  @IsBoolean({ message: CreateUpdateOfferValidationMessage.isPremium.invalidType })
   public isPremium: boolean;
 
-  @IsBoolean({ message: CreateOfferValidationMessage.isFavorite.invalidType })
+  @IsBoolean({ message: CreateUpdateOfferValidationMessage.isFavorite.invalidType })
   public isFavorite: boolean;
 
-  @IsNumber({}, { message: CreateOfferValidationMessage.rating.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.rating.minValue })
-  @Max(5, { message: CreateOfferValidationMessage.rating.maxValue })
-  @Validate(OneDecimalRule, { message: CreateOfferValidationMessage.rating.invalidFormat })
+  @IsNumber({}, { message: CreateUpdateOfferValidationMessage.rating.invalidFormat })
+  @Min(1, { message: CreateUpdateOfferValidationMessage.rating.minValue })
+  @Max(5, { message: CreateUpdateOfferValidationMessage.rating.maxValue })
+  @Validate(OneDecimalRule, { message: CreateUpdateOfferValidationMessage.rating.invalidFormat })
   @Type(() => Number)
   public rating: number;
 
-  @IsNotEmpty({ message: CreateOfferValidationMessage.type.required })
-  @IsEnum(OfferType, { message: CreateOfferValidationMessage.type.invalid })
+  @IsNotEmpty({ message: CreateUpdateOfferValidationMessage.type.required })
+  @IsEnum(OfferType, { message: CreateUpdateOfferValidationMessage.type.invalid })
   public type: OfferType;
 
-  @IsInt({ message: CreateOfferValidationMessage.rooms.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.rooms.minValue })
-  @Max(8, { message: CreateOfferValidationMessage.rooms.maxValue })
+  @IsInt({ message: CreateUpdateOfferValidationMessage.rooms.invalidFormat })
+  @Min(1, { message: CreateUpdateOfferValidationMessage.rooms.minValue })
+  @Max(8, { message: CreateUpdateOfferValidationMessage.rooms.maxValue })
   @Type(() => Number)
   public bedrooms: number;
 
-  @IsInt({ message: CreateOfferValidationMessage.guests.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.guests.minValue })
-  @Max(10, { message: CreateOfferValidationMessage.guests.maxValue })
+  @IsInt({ message: CreateUpdateOfferValidationMessage.guests.invalidFormat })
+  @Min(1, { message: CreateUpdateOfferValidationMessage.guests.minValue })
+  @Max(10, { message: CreateUpdateOfferValidationMessage.guests.maxValue })
   @Type(() => Number)
   public maxGuests: number;
 
-  @IsInt({ message: CreateOfferValidationMessage.price.invalidFormat })
-  @Min(100, { message: CreateOfferValidationMessage.price.minValue })
-  @Max(100000, { message: CreateOfferValidationMessage.price.maxValue })
+  @IsInt({ message: CreateUpdateOfferValidationMessage.price.invalidFormat })
+  @Min(100, { message: CreateUpdateOfferValidationMessage.price.minValue })
+  @Max(100000, { message: CreateUpdateOfferValidationMessage.price.maxValue })
   @Type(() => Number)
   public price: number;
 
-  @IsArray({ message: CreateOfferValidationMessage.amenities.invalidFormat })
-  @ArrayMinSize(1, { message: CreateOfferValidationMessage.amenities.required })
-  @IsEnum(AmenityType, { each: true, message: CreateOfferValidationMessage.amenities.invalidValue })
+  @IsArray({ message: CreateUpdateOfferValidationMessage.amenities.invalidFormat })
+  @ArrayMinSize(1, { message: CreateUpdateOfferValidationMessage.amenities.required })
+  @IsEnum(AmenityType, { each: true, message: CreateUpdateOfferValidationMessage.amenities.invalidValue })
   public amenities: AmenityType[];
 
-  @IsNotEmpty({ message: CreateOfferValidationMessage.authorId.required })
-  @IsMongoId({ message: CreateOfferValidationMessage.authorId.invalidId })
   public authorId: string;
 
   @IsOptional()
   @IsInt()
   public commentsCount?: number;
 
-  @IsNotEmpty({ message: CreateOfferValidationMessage.coordinates.required })
-  @Validate(CityCoordinatesMatch, { message: CreateOfferValidationMessage.coordinates.invalidFormat })
+  @IsNotEmpty({ message: CreateUpdateOfferValidationMessage.coordinates.required })
+  @Validate(CityCoordinatesMatch, { message: CreateUpdateOfferValidationMessage.coordinates.invalidFormat })
   public coordinates: Coordinates;
 }

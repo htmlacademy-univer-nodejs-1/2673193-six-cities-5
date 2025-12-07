@@ -4,21 +4,21 @@ POST http://localhost:5000/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "asdasd@fdmfm.com",
+  "email": "newUser@koko.com",
   "avatar": "torrance.png",
-  "name": "Torrance",
-  "password": "shining",
+  "name": "Jo",
+  "password": "jolololo",
   "type": "pro"
 }
 
 ###
-
+## Login user
 POST http://localhost:5000/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "asdasd@fdmfm.com",
-  "password": "shining"
+  "email": "newUser@koko.com",
+  "password": "jolololo"
 }
 
 
@@ -36,3 +36,11 @@ Content-Type: image/png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ##
+
+###
+
+## Проверить токен пользователя
+GET http://localhost:5000/users/login HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld1VzZXJAa29rby5jb20iLCJuYW1lIjoiSm8iLCJpZCI6IjY5MzU4ZGI3NjVhZTg4OTM1Yjk2ZmUyYiIsImlhdCI6MTc2NTEyMTk3OCwiZXhwIjoxNzY1MTIyODc4fQ.v--_UCEyxGWy_SWm_m4MF8S3KbIKc5ZLX4GHAxi-yJo
+
+###

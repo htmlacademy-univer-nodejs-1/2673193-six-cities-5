@@ -7,6 +7,7 @@ import { OfferEntity, OfferModel } from './offer.entity.js';
 import { FavoriteEntity, FavoriteModel } from './favorite.entity.js';
 import { Controller } from '../../libs/rest/index.js';
 import { OfferController } from './offer.controller.js';
+import { FavoritesController } from './favorites.controller.js';
 
 export function createOfferContainer(parent: Container) {
   const container = new Container({parent});
@@ -15,6 +16,7 @@ export function createOfferContainer(parent: Container) {
   container.bind<types.ModelType<OfferEntity>>(Component.OfferModel).toConstantValue(OfferModel);
   container.bind<types.ModelType<FavoriteEntity>>(Component.FavoriteModel).toConstantValue(FavoriteModel);
   container.bind<Controller>(Component.OfferController).to(OfferController).inSingletonScope();
+  container.bind<Controller>(Component.FavoritesController).to(FavoritesController).inSingletonScope();
 
   return container;
 }
