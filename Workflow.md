@@ -69,10 +69,17 @@ npm start
 #### Запустить json-сервер с mock данными
 
 ```bash
-json-server ./mocks/mock-server-data.json --port 4444
+npm run mock:server
 ```
 
 Команда для поднятия тестового REST API интерфейса с подготовленными данными.
+
+#### Запустить ts-проект через `nodemon` без компиляции
+
+```bash
+npm run start:dev
+```
+
 ### Переменные окружения
 `PORT=8080` - порт приложения  
 `SALT=exampleSALT` - соль для паролей  
@@ -83,6 +90,8 @@ json-server ./mocks/mock-server-data.json --port 4444
 `DB_NAME=db-name` - имя БД  
 `MONGO_RETRY_COUNT=5` - число попыток подключения к MongoDb  
 `MONGO_RETRY_TIMEOUT=1000` - время на одну попытку подключения к MongoDb
+`UPLOAD_DIRECTORY=./uploads` - директория для загружаемых файлов
+`JWT_SECRET=secret` - секрет для подписывания JWT
 
 ## Структура проекта
 

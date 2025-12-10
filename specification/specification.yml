@@ -86,19 +86,6 @@ paths:
         "401":
           description: Пользователь не авторизован.
 
-  /users/logout:
-    post:
-      tags:
-       - users
-      summary: Выход из сессии
-      description: Завершает пользовательский сеанс. Выход из закрытой части приложения.
-
-      responses:
-        "200":
-          description: Успешный выход из сессии.
-        "401":
-          description: Пользователь не авторизован.
-
   /users/{userId}/avatar:
     post:
       tags:
