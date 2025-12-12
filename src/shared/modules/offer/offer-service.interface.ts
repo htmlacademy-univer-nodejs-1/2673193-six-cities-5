@@ -6,14 +6,14 @@ import { DocumentExists } from '../../types/index.js';
 
 export interface OfferService extends DocumentExists {
   create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>>;
-  findById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  find(): Promise<DocumentType<OfferEntity>[]>;
+  findById(offerId: string, userId?: string): Promise<DocumentType<OfferEntity> | null>;
+  find(userId?: string): Promise<DocumentType<OfferEntity>[]>;
   updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null>;
   deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  findSorted(): Promise<DocumentType<OfferEntity>[]>;
+  findSorted(userId?: string): Promise<DocumentType<OfferEntity>[]>;
 
   incCommentsCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  findPremium(city: string): Promise<DocumentType<OfferEntity>[]>;
+  findPremium(city: string, userId?: string): Promise<DocumentType<OfferEntity>[]>;
   findFavorite(userId: string): Promise<DocumentType<OfferEntity>[]>;
   addToFavorite(userId: string, offerId: string): Promise<void>;
   removeFromFavorite(userId: string, offerId: string): Promise<void>;

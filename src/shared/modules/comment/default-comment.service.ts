@@ -5,6 +5,8 @@ import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../types/component.enum.js';
 import { OfferService } from '../offer/index.js';
+import { DEFAULT_COMMENTS_COUNT } from './comment.constant.js';
+import { SortType } from '../../types/index.js';
 
 @injectable()
 export class DefaultCommentService implements CommentService {
@@ -23,6 +25,8 @@ export class DefaultCommentService implements CommentService {
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[]> {
     return this.commentModel
       .find({offerId})
+      .sort({ createdAt: SortType.Down })
+      .limit(DEFAULT_COMMENTS_COUNT)
       .populate('authorId');
   }
 
